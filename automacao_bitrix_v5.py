@@ -9,8 +9,8 @@ import time
 EDGE_DRIVER_PATH = "C:/automacao_python/msedgedriver.exe"  # Ajuste o caminho do driver
 
 # Credenciais de login
-EMAIL = "cesar_augusto_perfil@hotmail.com"  # Substitua pelo seu e-mail
-SENHA = "Cavsf@1994"  # Substitua pela sua senha
+EMAIL = ""  # Substitua pelo seu e-mail
+SENHA = ""  # Substitua pela sua senha
 
 # URL do Bitrix24
 BITRIX_URL = "https://b24-1tvrpu.bitrix24.com.br/crm/deal/kanban/"
