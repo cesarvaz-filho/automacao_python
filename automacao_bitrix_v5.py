@@ -58,18 +58,32 @@ cliente_info = {
 }
 
 # Função para preencher o formulário do Kanban
-def criar_item_kanban(driver, cliente):
-    # Esperar o botão de adicionar item carregar e clicar nele
-    wait = WebDriverWait(driver, 10)
-    add_item_button = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'crm-kanban-column-add-item-button-event')))
-    add_item_button.click()
+def criar_item_kanban(driver, cliente_info):
+    # Passo 1: Encontrar a coluna "Consulta assertiva" pelo nome
+    coluna_elemento = WebDriverWait(driver, 20).until(
+        EC.visibility_of_element_located((By.XPATH, '//span[contains(text(), "' + cliente_info['coluna'] + '")]'))
+    )
+    
+    # Passo 2: Subir para o container da coluna
+    parent_coluna = coluna_elemento.find_element(By.XPATH, './ancestor::div[contains(@class, "crm-kanban-column")]')
 
-    # Aguardar 3 segundos para o formulário carregar
+    # Passo 3: Encontrar o botão 'Adicionar Item' dentro da coluna
+    botao_adicionar = parent_coluna.find_element(By.CLASS_NAME, 'crm-kanban-column-add-item-button')
+    botao_adicionar.click()
+
+    # Passo 4: Aguardar o card ser gerado (esperar que a div 'crm-kanban-quick-form-container' apareça)
+    form_container = WebDriverWait(driver, 10).until(
+        EC.visibility_of_element_located((By.CLASS_NAME, 'crm-kanban-quick-form-container'))
+    )
+
+    # Passo 5: Aguarde 3 segundos para garantir a renderização do formulário
     time.sleep(3)
 
-    # Clicar no botão "Salvar"
-    save_button = driver.find_element(By.CLASS_NAME, 'ui-btn-primary')
-    save_button.click()
+    # Passo 6: Encontrar o botão 'Salvar' dentro do card e clicar
+    botao_salvar = form_container.find_element(By.CLASS_NAME, 'ui-btn.ui-btn-xs.ui-btn-primary')
+    botao_salvar.click()
+
+    print("Item criado com sucesso na coluna:", cliente_info['coluna'])
 
 # Função principal
 def automacao_bitrix():
